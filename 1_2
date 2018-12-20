@@ -1,0 +1,49 @@
+#генерирование пароля
+import argparse
+import random
+import string
+import sys
+#Парсинг
+parser = argparse.ArgumentParser(description='Generate a password')
+parser.add_argument('-l', '--length', type=int, help='length')
+parser.add_argument('-ss', action='store_true', help='Generate password without symbols')
+parser.add_argument('-sn', action='store_true', help='Generate password without numbers')
+def Gen_pas(skip_s, skip_n):
+    if skip_s == 1:
+        return random.choice('0123456789')
+    elif skip_n == 1:
+        return random.choice('qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM')
+    else:
+        return random.choice('qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789')
+print("Let's greate a password!",'\n',
+     "Press -l x, if you want to change the length of password (x - new length)", '\n',
+     "Press -ss if you want to skip letters", '\n',
+     "Press -sn if you want to skip numbers")
+
+args = input()
+
+if(args == ''):
+    password = ''
+    for i in range(8):
+        password += Gen_pas(0, 0)
+    print(password)
+
+else:
+    args = args.split(' ')
+    args = parser.parse_args(args)
+    
+    if args.ss and args.sn:
+        print("I can't generate the password!")
+    else:
+
+        size = 8
+        if args.length:
+            size = args.length
+
+        random.seed()
+
+        password = ''
+        for i in range(size):
+            password += Gen_pas(args.ss, args.sn)
+
+        print(password)
